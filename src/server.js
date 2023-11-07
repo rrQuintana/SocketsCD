@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
     try {
 
 
-      const response =  await axios.get(`${api}/game/getGame/${pinGame}`);
+      const response =  await axios.get(`${api}/game/getGame/${gameId}`);
 
       let game = {};
       if (response.status === 200) {
