@@ -82,25 +82,52 @@ io.on("connection", (socket) => {
     }
   });
 
+  // socket.on("answerQuestion", ({ answer, user, pinGame }) => {
+  //   const correctAnswer = questions[currentQuestionIndex].options.find(
+  //     (option) => option.answer === true
+  //   ).option;
+
+  //   const isCorrect = answer === correctAnswer;
+
+  //   if (isCorrect) {
+  //     correctAnswersCount++;
+  //   }
+
+  //   const playerId = user._id;
+  //   playerResponses[playerId] = {
+  //     user,
+  //     pinGame,
+  //     correctAnswersCount,
+  //     total: questions.length,
+  //   };
+
+  //   socket.emit("answerResult", { isCorrect });
+  // });
+
   socket.on("answerQuestion", ({ answer, user, pinGame }) => {
     const correctAnswer = questions[currentQuestionIndex].options.find(
       (option) => option.answer === true
     ).option;
-
+  
     const isCorrect = answer === correctAnswer;
-
-    if (isCorrect) {
-      correctAnswersCount++;
-    }
+  
 
     const playerId = user._id;
-    playerResponses[playerId] = {
-      user,
-      pinGame,
-      correctAnswersCount,
-      total: questions.length,
-    };
-
+  
+    
+    if (!playerResponses[playerId]) {
+      playerResponses[playerId] = {
+        user,
+        pinGame,
+        correctAnswersCount: 0, 
+        total: questions.length,
+      };
+    }
+  
+    if (isCorrect) {
+      playerResponses[playerId].correctAnswersCount++;
+    }
+  
     socket.emit("answerResult", { isCorrect });
   });
 
