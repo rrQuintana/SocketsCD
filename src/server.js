@@ -36,7 +36,14 @@ io.on("connection", (socket) => {
     try {
 
 
-      const game = await axios.get(`${api}/game/getGame/${gameId}`);
+      const response =  await axios.get(`${api}/game/getGame/${pinGame}`);
+
+      let game = {};
+      if (response.status === 200) {
+         game = response.data.game;
+      } else {
+        console.error("Failed to retrieve game data. Status code: ", response.status);
+      }
 
       if (!game) {
         throw new Error("No se encontró el juego");
@@ -115,14 +122,15 @@ io.on("connection", (socket) => {
     "joinWaitingRoom",
     async ({ userId, name, lastName, img, pinGame, rol }) => {
       
-      console.log('Welcome: ', name);
+      console.log('Welcome waiting Room: ', name);
+      const response =  await axios.get(`${api}/game/getGame/${pinGame}`);
 
-
-      const game =  await axios.get(`${api}/game/getGame/${pinGame}`);
-
-      console.log("Game",game);
-
-      console.log('Ingreso un usaurio', userId);
+      let game = {};
+      if (response.status === 200) {
+         game = response.data.game;
+      } else {
+        console.error("Failed to retrieve game data. Status code: ", response.status);
+      }
 
       if (
         !waitingRoomPlayers[game.owner.toString()] &&
