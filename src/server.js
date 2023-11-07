@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 const server = http.createServer(app);
 const api = process.env.API_SERVICE;
-const front = process.env.WEB_SERVICE;
+// const front = process.env.WEB_SERVICE;
 
 const io = new Server(server, {
   cors: {
