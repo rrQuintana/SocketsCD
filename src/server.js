@@ -1,10 +1,9 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const fetch = import("node-fetch");
 const ROLES = require("../src/const/const");
 require('dotenv').config();
-
+const axios = require('axios');
 
 const PORT = process.env.PORT || 3000;
 
@@ -15,7 +14,7 @@ const front = process.env.WEB_SERVICE;
 
 const io = new Server(server, {
   cors: {
-    origins: '*:*',
+    origins: '*',
     methods: ['GET', 'POST'],
   },
 });
@@ -32,12 +31,12 @@ let waitingRoomPlayers = {};
 
 io.on("connection", (socket) => {
 
-  console.log('Welcome: ', socket.id);
 
   socket.on("startGame", async (gameId) => {
     try {
 
-      const game = await fetch(`${api}/game//getGame/${gameId}`);
+
+      const game = await axios.get(`${api}/game/getGame/${gameId}`);
 
       if (!game) {
         throw new Error("No se encontró el juego");
@@ -116,7 +115,12 @@ io.on("connection", (socket) => {
     "joinWaitingRoom",
     async ({ userId, name, lastName, img, pinGame, rol }) => {
       
-      const game = await fetch(`${api}/game//getGame/${gameId}`);
+      console.log('Welcome: ', name);
+
+
+      const game =  await axios.get(`${api}/game/getGame/${pinGame}`);
+
+      console.log("Game",game);
 
       console.log('Ingreso un usaurio', userId);
 
