@@ -68,14 +68,14 @@ const incidentHistorySchema = new mongoose.Schema(
   }
 );
 
-const Incident = mongoose.model('Incident', incidentHistorySchema);
+const Incident = mongoose.model('IncidentHistory', incidentHistorySchema);
 
 Incident.watch().on('change', (change) => {
   console.log('Database change detected:', change);
 
   const message = {
     title: 'Database Update',
-    body: 'An incident has been updated.',
+    body: 'Una ',
     timestamp: new Date().toISOString(),
   };
 
